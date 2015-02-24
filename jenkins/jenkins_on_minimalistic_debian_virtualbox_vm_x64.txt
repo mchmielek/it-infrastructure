@@ -1,0 +1,19 @@
+From: https://odoepner.wordpress.com/2011/11/23/jenkins-on-minimalistic-debian-virtualbox-vm-64bit/
+
+A Jenkins build server (LTS release) can now be easily installed on the minimalistic Debian VM:
+
+    Download and install Virtualbox
+    Download debian-stable-amd64-minimal.ova (http://dev.doepner.net/dist/vms/debian-stable-amd64-minimal.ova) and import it into Virtualbox
+    Start the “debian-stable-amd64-minimal” VM in Virtualbox
+    Review debian-stable-amd64-minimal.txt and adjust locale, timezone and Debian mirror based on your location
+    Start an ssh session to localhost, port 1111 (using PuTTY, for example)
+    Log in as user (default password is “user”)
+    Issue “sudo install.sh jenkins” (default root password is “root”)
+    Press enter for any questions during installation
+    Open http://localhost:8888/ in a browser on the host OS for Jenkins web ui
+
+You can go to “Manage Jenkins” – “Configure System” and see that JDK, Ant and Maven entries are already configured for you.
+
+Both OpenJDK 6 and OpenJDK 7 are installed automatically for you in the VM. Please note that openjdk-6 is the Debian stable system default, while openjdk-7 is configured as the default for Jenkins build jobs.
+
+Important: Make sure to change root and user passwords to something secure, as mentioned in debian-stable-amd64-minimal.txt.

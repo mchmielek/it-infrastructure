@@ -1,0 +1,41 @@
+Base system for headless servers (no xorg)
+
+Distribution: Debian stable, Platform: amd64
+Based on "businesscard CD image" from http://www.debian.org/CD/netinst/
+plus everything that I consider important for a server base system
+
+Single XFS root partition + swap partition
+
+User "user" has full sudo rights, as described here:
+https://odoepner.wordpress.com/2011/08/20/set-up-sudo-on-debian/
+(similar to Ubuntu, but using root password)
+
+Default username/password: root/root, user/user
+Change to something more secure using 
+sudo passwd 
+sudo passwd user
+
+Locale: en_CA 
+Change via: sudo dpkg-reconfigure locales
+
+Timezone: Atlantic
+Change via: sudo dpkg-reconfigure tzdata
+
+APT mirror: mirror.its.dal.ca
+Use closest Debian mirror instead:
+sudo nano /etc/apt/sources.list
+Replace "mirror.its.dal.ca" with your favorite from
+http://www.debian.org/mirror/list
+Then sudo apt-get update
+
+List of all installed packages: 
+sudo dpkg --get-selections | sort > /tmp/packages.list
+less /tmp/packages.list
+
+For newer packages for Debian stable try official backports:
+http://backports.debian.org/Instructions/
+
+ssh connections to the VM have been enabled like this:
+VBoxManage modifyvm "debian-stable-amd64-minimal" --natpf1 "guestssh,tcp,,1111,,22"
+This means you can ssh to localhost port 1111 from the host.
+See http://www.virtualbox.org/manual/ch06.html for more networking details.
