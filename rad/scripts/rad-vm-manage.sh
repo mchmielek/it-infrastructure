@@ -5,7 +5,7 @@
 VM_MANAGE=VBoxManage
 
 # file listing all VMs for R&D home network
-RAD_VMS_LIST="~/.rad_vms"
+RAD_VMS_LIST=~/.rad_vms
 
 # TODO: alternatively think of entire setup suites that will put this into /ets/rad.d/rad_vms
 
@@ -30,26 +30,20 @@ function rad_list_vms()
    local available_rad_vms=
 
    # read all VMs belonging to R&D network   
-   if [ -f "$RAD_VMS_LIST" ]; then
-      echo "Found $RAD_VMS_LIST"
-
-      rad_vms=cat "$RAD_VMS_LIST"
-
-      echo "*** RAD VMS ***"
-      echo "$rad_vms"
+   if [ -e "$RAD_VMS_LIST" ]; then
+      rad_vms="$(cat $RAD_VMS_LIST)"
    fi
 
    # read all available VMs
    available_vms=$(vm_manage list vms)
  
-   echo "*** AVAILABLE VMS ***"
-   echo "$available_vms"
-
    # get the list of VMs that are available
-   # for each rad vm
-   #  check if available
-   #     if yes, add to available rad vms
+   local vm   
+   while read vm; do
+      [ ! -z "$(echo $available_vms | grep $vm)" ] && available_rad_vms="$available_rad_vms$vm "
+   done < "$RAD_VMS_LIST"
 
+   echo "$available_rad_vms"
 }
 
 function rad_start_all_vms()
@@ -58,6 +52,12 @@ function rad_start_all_vms()
 
    # for each rad_vm
    #  vm_manage start rad_vm
+
+   local vm
+   while read vm; do
+      # check whether already running, if not start the vm ...
+      echo "Starting $vm ..."
+   done < "$RAD_VMS_LIST"
   
 }
 
